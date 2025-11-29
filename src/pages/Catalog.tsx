@@ -1,5 +1,6 @@
-import { Grid, Heart, List, Search, ShoppingCart, SlidersHorizontal, Star, X } from 'lucide-react'
+import { Check, Grid, Heart, List, Search, ShoppingCart, SlidersHorizontal, Star, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { useCart } from '../contexts/CartContext'
 
 interface Product {
   id: number
@@ -153,6 +154,7 @@ type ViewMode = 'grid' | 'list'
 type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'rating' | 'newest'
 
 export default function Catalog() {
+  const { addToCart, cartItems } = useCart()
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -161,6 +163,7 @@ export default function Catalog() {
   const [sortBy, setSortBy] = useState<SortOption>('featured')
   const [showFilters, setShowFilters] = useState(false)
   const [favorites, setFavorites] = useState<number[]>([])
+  const [addedToCart, setAddedToCart] = useState<number | null>(null)
 
   const categories = useMemo(() => {
     const cats = new Set(products.map(p => p.category))
@@ -170,7 +173,6 @@ export default function Catalog() {
   const filteredProducts = useMemo(() => {
     let filtered = products
 
-    // Search
     if (searchQuery) {
       filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -178,18 +180,13 @@ export default function Catalog() {
       )
     }
 
-    // Category
     if (selectedCategory !== 'all') {
       filtered = filtered.filter(p => p.category === selectedCategory)
     }
 
-    // Price range
     filtered = filtered.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1])
-
-    // Rating
     filtered = filtered.filter(p => p.rating >= minRating)
 
-    // Sort
     const sorted = [...filtered]
     switch (sortBy) {
       case 'price-asc':
@@ -215,8 +212,29 @@ export default function Catalog() {
     )
   }
 
+  const handleAddToCart = (product: Product) => {
+    if (!product.inStock) return
+    
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      category: product.category
+    })
+
+    setAddedToCart(product.id)
+    setTimeout(() => setAddedToCart(null), 2000)
+  }
+
+  const isInCart = (productId: number) => {
+    return cartItems.some(item => item.id === productId)
+  }
+
   const ProductCard = ({ product }: { product: Product }) => {
     const isFavorite = favorites.includes(product.id)
+    const isAdded = addedToCart === product.id
+    const inCart = isInCart(product.id)
 
     if (viewMode === 'list') {
       return (
@@ -280,11 +298,34 @@ export default function Catalog() {
                 </div>
 
                 <button
+                  onClick={() => handleAddToCart(product)}
                   disabled={!product.inStock}
-                  className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
+                    isAdded 
+                      ? 'bg-green-500 text-white' 
+                      : inCart
+                      ? 'bg-gray-200 text-gray-700'
+                      : product.inStock 
+                      ? 'bg-primary text-white hover:bg-primary/90 hover:scale-105' 
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }`}
                 >
-                  <ShoppingCart className="h-5 w-5" />
-                  {product.inStock ? 'Agregar' : 'Agotado'}
+                  {isAdded ? (
+                    <>
+                      <Check className="h-5 w-5" />
+                      ¡Agregado!
+                    </>
+                  ) : inCart ? (
+                    <>
+                      <Check className="h-5 w-5" />
+                      En carrito
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingCart className="h-5 w-5" />
+                      {product.inStock ? 'Agregar' : 'Agotado'}
+                    </>
+                  )}
                 </button>
               </div>
             </div>
@@ -294,12 +335,12 @@ export default function Catalog() {
     }
 
     return (
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow group">
+      <div className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group">
         <div className="relative overflow-hidden">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
             loading="lazy"
           />
           {product.badge && (
@@ -348,11 +389,34 @@ export default function Catalog() {
           </div>
 
           <button
+            onClick={() => handleAddToCart(product)}
             disabled={!product.inStock}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold transition-all duration-200 ${
+              isAdded 
+                ? 'bg-green-500 text-white scale-105' 
+                : inCart
+                ? 'bg-gray-200 text-gray-700'
+                : product.inStock 
+                ? 'bg-primary text-white hover:bg-primary/90 hover:scale-105 hover:shadow-lg' 
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
           >
-            <ShoppingCart className="h-5 w-5" />
-            {product.inStock ? 'Agregar al carrito' : 'Agotado'}
+            {isAdded ? (
+              <>
+                <Check className="h-5 w-5" />
+                ¡Agregado al carrito!
+              </>
+            ) : inCart ? (
+              <>
+                <Check className="h-5 w-5" />
+                En carrito
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="h-5 w-5" />
+                {product.inStock ? 'Agregar al carrito' : 'Agotado'}
+              </>
+            )}
           </button>
         </div>
       </div>
@@ -361,7 +425,6 @@ export default function Catalog() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Catálogo de Productos</h1>
@@ -370,7 +433,6 @@ export default function Catalog() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Search & View Toggle */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -414,7 +476,6 @@ export default function Catalog() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar */}
           <aside className={`lg:w-64 flex-shrink-0 ${showFilters ? 'block' : 'hidden lg:block'}`}>
             <div className="bg-white rounded-lg shadow-sm p-6 sticky top-4">
               <div className="flex items-center justify-between mb-4">
@@ -427,7 +488,6 @@ export default function Catalog() {
                 </button>
               </div>
 
-              {/* Category Filter */}
               <div className="mb-6">
                 <h3 className="font-semibold mb-3">Categoría</h3>
                 <div className="space-y-2">
@@ -448,7 +508,6 @@ export default function Catalog() {
                 </div>
               </div>
 
-              {/* Price Range */}
               <div className="mb-6">
                 <h3 className="font-semibold mb-3">Rango de Precio</h3>
                 <input
@@ -466,7 +525,6 @@ export default function Catalog() {
                 </div>
               </div>
 
-              {/* Rating Filter */}
               <div className="mb-6">
                 <h3 className="font-semibold mb-3">Calificación mínima</h3>
                 <div className="space-y-2">
@@ -493,7 +551,6 @@ export default function Catalog() {
                 </div>
               </div>
 
-              {/* Sort By */}
               <div>
                 <h3 className="font-semibold mb-3">Ordenar por</h3>
                 <select
@@ -511,7 +568,6 @@ export default function Catalog() {
             </div>
           </aside>
 
-          {/* Products Grid/List */}
           <div className="flex-1">
             <div className="mb-4 flex justify-between items-center">
               <p className="text-gray-600">
