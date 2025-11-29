@@ -16,7 +16,7 @@ export default function Hero() {
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
               <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
               <span className="text-sm font-semibold text-primary">
-                Nuevo lanzamiento 2024
+                Nuevo lanzamiento 2025
               </span>
             </div>
 
