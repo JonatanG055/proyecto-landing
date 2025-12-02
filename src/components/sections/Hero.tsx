@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle, Play, Sparkles, Zap } from 'lucide-react'
+import { ArrowRight, CheckCircle, Gem, Play, Shield, Sparkles, Truck, Zap } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export default function Hero() {
@@ -100,16 +100,16 @@ export default function Hero() {
             {/* Features List */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center lg:justify-start">
               {[
-                { icon: '🚀', text: 'Envío Express 24h' },
-                { icon: '🛡️', text: 'Garantía 3 años' },
-                { icon: '💎', text: 'Calidad Premium' }
+                { icon: Truck, text: 'Envío Express 24h', color: 'text-blue-400' },
+                { icon: Shield, text: 'Garantía 3 años', color: 'text-green-400' },
+                { icon: Gem, text: 'Calidad Premium', color: 'text-purple-400' }
               ].map((feature, i) => (
                 <div 
                   key={i} 
                   className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105"
                   style={{ animationDelay: `${i * 0.1}s` }}
                 >
-                  <span className="text-xl">{feature.icon}</span>
+                  <feature.icon className={`w-5 h-5 ${feature.color}`} />
                   <span className="text-white font-medium text-sm">{feature.text}</span>
                 </div>
               ))}
@@ -191,7 +191,7 @@ export default function Hero() {
               >
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <CheckCircle className="w-6 h-6 text-white" />
+                    <Truck className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <div className="font-bold text-gray-900">Envío Express</div>
@@ -208,8 +208,8 @@ export default function Hero() {
                 }}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-xl flex items-center justify-center text-2xl shadow-lg">
-                    ⭐
+                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <CheckCircle className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <div className="font-bold text-gray-900">10,000+ Reviews</div>

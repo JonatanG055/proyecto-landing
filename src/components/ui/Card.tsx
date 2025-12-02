@@ -1,4 +1,4 @@
-import { ArrowLeft, Minus, Plus, ShoppingBag, Tag, Trash2 } from 'lucide-react'
+import { ArrowLeft, Lightbulb, Minus, Plus, ShoppingBag, Tag, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { useCart } from '../../contexts/CartContext'
 
@@ -196,9 +196,10 @@ export default function Cart() {
               </a>
 
               {subtotal < 100 && (
-                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-2">
+                  <Lightbulb className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-blue-800">
-                    💡 Agrega ${(100 - subtotal).toFixed(2)} más para <strong>envío gratis</strong>
+                    Agrega ${(100 - subtotal).toFixed(2)} más para <strong>envío gratis</strong>
                   </p>
                 </div>
               )}

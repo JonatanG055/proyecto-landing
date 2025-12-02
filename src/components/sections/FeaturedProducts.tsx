@@ -1,4 +1,4 @@
-import { ArrowRight, Heart, ShoppingCart, Star, Zap } from 'lucide-react'
+import { ArrowRight, Award, Gem, Heart, Shield, ShoppingCart, Star, Truck, Zap } from 'lucide-react'
 import { useState } from 'react'
 
 interface Product {
@@ -236,7 +236,7 @@ export default function FeaturedProducts() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="flex flex-col items-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-3">
-                <span className="text-3xl">🚚</span>
+                <Truck className="w-8 h-8 text-green-600" />
               </div>
               <h4 className="font-semibold mb-1">Envío Express</h4>
               <p className="text-sm text-gray-600">Entrega en 24-48h</p>
@@ -244,7 +244,7 @@ export default function FeaturedProducts() {
             
             <div className="flex flex-col items-center">
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">
-                <span className="text-3xl">🛡️</span>
+                <Shield className="w-8 h-8 text-blue-600" />
               </div>
               <h4 className="font-semibold mb-1">Garantía Extendida</h4>
               <p className="text-sm text-gray-600">Hasta 3 años</p>
@@ -252,7 +252,7 @@ export default function FeaturedProducts() {
             
             <div className="flex flex-col items-center">
               <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-3">
-                <span className="text-3xl">💎</span>
+                <Gem className="w-8 h-8 text-purple-600" />
               </div>
               <h4 className="font-semibold mb-1">Calidad Premium</h4>
               <p className="text-sm text-gray-600">Productos certificados</p>
@@ -260,7 +260,7 @@ export default function FeaturedProducts() {
             
             <div className="flex flex-col items-center">
               <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-3">
-                <span className="text-3xl">⭐</span>
+                <Award className="w-8 h-8 text-yellow-600" />
               </div>
               <h4 className="font-semibold mb-1">10,000+ Clientes</h4>
               <p className="text-sm text-gray-600">4.9/5 estrellas</p>

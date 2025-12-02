@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 const faqs = [
   { id:1, q:'¿Cuál es el tiempo de entrega?', a:'3-5 días hábiles.' },

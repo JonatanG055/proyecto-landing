@@ -1,4 +1,4 @@
-import { ArrowLeft, Minus, Plus, ShoppingBag, Tag, Trash2 } from 'lucide-react'
+import { ArrowLeft, Lightbulb, Minus, Plus, ShoppingBag, Tag, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLocalStorage } from '../hooks/useLocalStorage'
@@ -108,7 +108,7 @@ export default function Cart() {
           {/* Items List */}
           <div className="lg:col-span-2 space-y-4">
             {cartItems.map(item => (
-              <div key={item.id} className="bg-white rounded-lg shadow-sm p-4 md:p-6">
+              <div key={item.id} className="bg-white rounded-lg shadow-sm p-4 md:p-6 hover:shadow-md transition-shadow">
                 <div className="flex gap-4">
                   <img
                     src={item.image}
@@ -196,6 +196,7 @@ export default function Cart() {
                     <span>Cupón {appliedCoupon.code} aplicado ({appliedCoupon.discount}% descuento)</span>
                   </div>
                 )}
+                <p className="text-xs text-gray-500 mt-2">Prueba: SAVE10, SAVE20, WELCOME</p>
               </div>
 
               {/* Price Details */}
@@ -223,7 +224,10 @@ export default function Cart() {
                 <span className="text-2xl font-bold text-primary">${total.toFixed(2)}</span>
               </div>
 
-              <button className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors mb-3">
+              <button 
+                onClick={() => alert('🎉 Redirigiendo al proceso de pago seguro...')}
+                className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors mb-3"
+              >
                 Proceder al pago
               </button>
 
@@ -235,9 +239,12 @@ export default function Cart() {
               </Link>
 
               {subtotal < 100 && (
-                <p className="text-sm text-gray-600 text-center mt-4">
-                  Agrega ${(100 - subtotal).toFixed(2)} más para envío gratis
-                </p>
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-start gap-2">
+                  <Lightbulb className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-blue-800">
+                    Agrega ${(100 - subtotal).toFixed(2)} más para <strong>envío gratis</strong>
+                  </p>
+                </div>
               )}
             </div>
           </div>
