@@ -1,5 +1,6 @@
 import { ArrowRight, Award, Gem, Heart, Shield, ShoppingCart, Star, Truck, Zap } from 'lucide-react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 interface Product {
   id: number
@@ -221,13 +222,13 @@ export default function FeaturedProducts() {
                 Explora nuestro catálogo completo con más de 100 productos premium
               </p>
             </div>
-            <a
-              href="/catalog"
+            <Link
+              to="/catalog"
               className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
             >
               Ver catálogo completo
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
           </div>
         </div>
 
