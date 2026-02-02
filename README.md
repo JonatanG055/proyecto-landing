@@ -1,6 +1,6 @@
 # Proyecto Landing (esqueleto)
 
-Este repositorio contiene un **scaffold** listo para desarrollar una landing page profesional
+they  repository contiene un **scaffold** ready for  develoment a landing page profesionaly
 con React + Vite + TypeScript + Tailwind.
 
 Algunos puntos importantes:
