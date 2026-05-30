@@ -4,7 +4,7 @@ import { useState } from 'react'
 const items = [
   { 
     id:1, 
-    name: 'María González', 
+    name: 'María González test', 
     role:'CEO, TechCorp', 
     text:'Excelente producto que ha transformado completamente nuestra forma de trabajar. La calidad es excepcional y el soporte técnico siempre está disponible.' 
   },
